@@ -1,14 +1,14 @@
 class ParkingLotTracker:
-    def __init__(self, MAX_SIZE=40):
+    def __init__(self, MAX_SIZE:int = 40) -> None:
         """Constructor method to initialize the parking spots based on MAX_SIZE and a dictionary to add parked vehicles."""
         self.slots = [i for i in range(1, MAX_SIZE + 1)]
         self.vehicles = {}
 
-    def printSlots(self):
+    def printSlots(self) -> list():
         """Prints the empty slots that could be used for parking."""
         return self.slots
 
-    def registerVehicle(self, id):
+    def registerVehicle(self, id:str) -> str:
         """Registers vehicle id to initiate parking"""
         if len(id) == 0:
             return "Enter a valid Vehicle Id"
@@ -26,7 +26,7 @@ class ParkingLotTracker:
         self.vehicles[id] = spot
         return f"Spot for vehicle {id} is {spot}"
 
-    def getDetails(self, id):
+    def getDetails(self, id:str) -> dict:
         """Extract the details of the vehicle parked in the parking lot."""
         if id in self.vehicles:
             spot = self.vehicles[id]
@@ -34,19 +34,20 @@ class ParkingLotTracker:
                 level = "A"
             else:
                 level = "B"
-            d = {"level": level, "spot": spot}
+            d = {"res":{"level": level, "spot": spot}}
             return d
         else:
-            return "Vehicle not parked here."
+            d = {"res":"Vehicle not parked here"}
+            return d
 
-    def emptySpot(self, id):
+    def emptySpot(self, id:str) -> list():
         """Remove the vehicle from parking lot and display the remaining parking spots."""
         if id in self.vehicles:
             slot = self.vehicles.pop(id)
             self.slots.append(slot)
             self.slots.sort()
             return self.printSlots()
-        return "Vehicle Id is not present"
+        return [-1]
 
 
 obj = ParkingLotTracker()
@@ -62,8 +63,13 @@ while True:
     if second_input.upper() == "R":
         print(obj.registerVehicle(user_input))
     elif second_input.upper() == "D":
-        print(obj.getDetails(user_input))
+        ans = (obj.getDetails(user_input))
+        print(ans["res"])
     elif second_input.upper() == "E":
-        print(obj.emptySpot(user_input))
+        ans = (obj.emptySpot(user_input))
+        if ans == [-1]:
+            print("Vehicle not parked here.")
+        else:
+            print(ans)
     else:
-        "Enter Valid Input."
+        print("Enter Valid Input.")
